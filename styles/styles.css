@@ -163,6 +163,8 @@ body {
 
 .nh-overlay {
     margin: 10px;
+    display: none;
+    flex-direction: column;
 }
 
 .nh-overlay-tile {
