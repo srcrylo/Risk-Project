@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Testing</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="dropdown nav-element">
+        <div class="dropdown-tile">Access Lists</div>
+        <div id="acc-lists" class="dropdown-options">
+          <div class="dropdown-opt" onclick="displaySection('newhire');">
+            New Hire
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt" onclick="displaySection('transfer')">
+            Transfer
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt" onclick="displaySection('promo')">
+            Promotion
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt" onclick="displaySection('term')">
+            Termination
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt" onclick="displaySection('rehire')">
+            Rehire
+          </div>
+        </div>
+      </div>
+      <div class="vr"></div>
+      <div class="dropdown nav-element">
+        <div class="dropdown-tile">List Admin</div>
+        <div class="dropdown-options">
+          <div class="dropdown-opt">
+            <div class="dropdown-opt-tile">Create</div>
+            <div class="dropdown-subs">
+              <div class="dropdown-opt">Create Tool</div>
+              <hr class="dropdown-divider" />
+              <div class="dropdown-opt">Create Title</div>
+            </div>
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt">
+            <div class="dropdown-opt-tile">Read</div>
+            <div class="dropdown-subs">
+              <div class="dropdown-opt">All Jobs</div>
+              <hr class="dropdown-divider" />
+              <div class="dropdown-opt">Jobs (Location)</div>
+              <hr class="dropdown-divider" />
+              <div class="dropdown-opt">All Tools</div>
+              <hr class="dropdown-divider" />
+              <div class="dropdown-opt">Tools (Title)</div>
+            </div>
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt">
+            <div class="dropdown-opt-tile">Update</div>
+            <div class="dropdown-subs">
+              <div class="dropdown-opt">Update Entry</div>
+            </div>
+          </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt">
+            <div class="dropdown-opt-tile">Delete</div>
+            <div class="dropdown-subs">
+              <div class="dropdown-opt">Delete Tool</div>
+              <hr class="dropdown-divider" />
+              <div class="dropdown-opt">Delete Title</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrapall">
+    <div id="newhire" class="container alist">
+      <div class="wrap">
+        <div class="main-tile newhire">New Hire</div>
+        <div class="selects">
+          <select class="sel sel-left" id="nh-loc">
+            <option>Option</option>
+            <option>Option</option>
+            <option>Option</option>
+          </select>
+          <select class="sel sel-right" id="nh-title">
+            <option>Option</option>
+            <option>Option</option>
+            <option>Option</option>
+          </select>
+        </div>
+        <div class="nh-tools" id="nh-tools"></div>
+      </div>
+    </div>
+    <div id="transfer" class="container alist">
+      <div class="main-tile transfer">Transfer</div>
+      <div class="selects">
+        <select class="sel sel-left" id="tr-loc1"></select>
+        <select class="sel sel-right" id="tr-title1"></select>
+        <select class="sel sel-right" id="tr-loc2"></select>
+        <select class="sel sel-right" id="tr-title2"></select>
+      </div>
+      <div id="tr-tools" class="">
+        <div id="tr-add" class="add container-rel">
+          <p class="addtip container-rel">Add</p>
+        </div>
+        <div id="tr-remove" class="remove container-rel">
+          <p class="removetip container-rel">Remove</p>
+        </div>
+        <div id="tr-change" class="change container-rel">
+          <p class="changetip container-rel">Change</p>
+        </div>
+      </div>
+    </div>
+    <div id="promo" class="container alist">
+      <div class="main-tile promo">Promotion</div>
+      <div class="selects">
+        <select class="sel sel-left" id="pr-loc"></select>
+        <select class="sel sel-right" id="pr-frtitle"></select>
+        <select class="sel sel-right" id="pr-totitle"></select>
+      </div>
+      <div id="pr-tools" class="">
+        <div id="pr-add" class="add container-rel">
+          <p class="addtip container-rel">Add</p>
+        </div>
+        <div id="pr-remove" class="remove container-rel">
+          <p class="removetip container-rel">Remove</p>
+        </div>
+        <div id="pr-change" class="change container-rel">
+          <p class="changetip container-rel">Change</p>
+        </div>
+      </div>
+    </div>
+    <div id="term" class="container alist">
+      <div class="main-tile term">Termination</div>
+    </div>
+    <div id="rehire" class="container alist">
+      <div class="main-tile rehire">Rehire</div>
+    </div>
+    <div id="overlay" class="container overlay">
+      <div id="overlay-title"></div>
+      <div id="overlay-content"></div>
+    </div>
+    </div>
+    <script>
+      // New Hire
+      fetch("http://10.200.1.172:8000/locations")
+        .then((res) => res.json())
+        .then((data) => {
+          const locations = document.getElementById("nh-loc");
+          locations.innerHTML = '<option value="">--Select--</option>';
+          data.forEach((loc) => {
+            console.log("adding loc: ", loc);
+            let opt = document.createElement("option");
+            opt.value = loc;
+            opt.textContent = loc;
+            locations.appendChild(opt);
+          });
+        });
+      document.getElementById("nh-loc").addEventListener("change", function () {
+        const location = this.value;
+        fetch("http://10.200.1.172:8000/jobs/" + location)
+          .then((res) => res.json())
+          .then((data) => {
+            const jobSelect = document.getElementById("nh-title");
+            jobSelect.innerHTML = '<option value="">--Select--</option>';
+            data.forEach((job) => {
+              console.log("adding job: ", job);
+              let opt = document.createElement("option");
+              opt.value = job;
+              opt.textContent = job;
+              jobSelect.appendChild(opt);
+            });
+          });
+      });
+      document
+        .getElementById("nh-title")
+        .addEventListener("change", function () {
+          const job = document.getElementById("nh-title").value;
+          const loc = document.getElementById("nh-loc").value;
+
+          fetch("http://10.200.1.172:8000/tools?job=" + job + "&loc=" + loc)
+            .then((res) => res.json())
+            .then((tools) => {
+              const container = document.getElementById("nh-tools");
+              container.innerHTML = "";
+              tools.forEach((tool) => {
+                const p = document.createElement("p");
+                p.textContent = tool;
+                p.classList.add("pt");
+                p.classList.add("container");
+                p.addEventListener("click", () => {
+                  p.classList.toggle("selected");
+                });
+                container.appendChild(p);
+              });
+            });
+          fetch("http://10.200.1.172:8000/store-info/" + loc)
+            .then((re) => re.json())
+            .then((info) => {
+              const title = document.getElementById('overlay-title');
+              title.innerHTML = "Store Info";
+              const cont = document.getElementById("overlay-content");
+              cont.innerHTML = "";
+              cont.style.display = "block";
+              info.forEach((inf) => {
+                const p = document.createElement("p");
+                p.textContent = inf;
+                p.classList.add("pt");
+                p.classList.add("container");
+                cont.appendChild(p);
+              });
+            });
+        });
+
+      // Transfer
+      fetch("http://10.200.1.172:8000/locations")
+        .then((res) => res.json())
+        .then((data) => {
+          const tl = document.getElementById("tr-loc1");
+          tl.innerHTML = '<option value="">--Select--</option>';
+          data.forEach((loc) => {
+            console.log("adding loc: ", loc);
+            let opt = document.createElement("option");
+            opt.value = loc;
+            opt.textContent = loc;
+            tl.appendChild(opt);
+          });
+        });
+      fetch("http://10.200.1.172:8000/locations")
+        .then((res) => res.json())
+        .then((data) => {
+          const fl = document.getElementById("tr-loc2");
+          fl.innerHTML = '<option value="">--Select--</option>';
+          data.forEach((loc) => {
+            console.log("adding loc: ", loc);
+            let opt = document.createElement("option");
+            opt.value = loc;
+            opt.textContent = loc;
+            fl.appendChild(opt);
+          });
+        });
+      document
+        .getElementById("tr-loc1")
+        .addEventListener("change", function () {
+          const location = this.value;
+          fetch("http://10.200.1.172:8000/jobs/" + location)
+            .then((res) => res.json())
+            .then((data) => {
+              const jobSelect = document.getElementById("tr-title1");
+              jobSelect.innerHTML = '<option value="">--Select--</option>';
+              data.forEach((job) => {
+                console.log("adding job: ", job);
+                let opt = document.createElement("option");
+                opt.value = job;
+                opt.textContent = job;
+                jobSelect.appendChild(opt);
+              });
+            });
+        });
+      document
+        .getElementById("tr-loc2")
+        .addEventListener("change", function () {
+          const location = this.value;
+          fetch("http://10.200.1.172:8000/jobs/" + location)
+            .then((res) => res.json())
+            .then((data) => {
+              const jobSelect = document.getElementById("tr-title2");
+              jobSelect.innerHTML = '<option value="">--Select--</option>';
+              data.forEach((job) => {
+                console.log("adding job: ", job);
+                let opt = document.createElement("option");
+                opt.value = job;
+                opt.textContent = job;
+                jobSelect.appendChild(opt);
+              });
+            });
+        });
+      document
+        .getElementById("tr-title2")
+        .addEventListener("change", function () {
+          const fromLoc = document.getElementById("tr-loc1").value;
+          const fromTitle = document.getElementById("tr-title1").value;
+          const toLoc = document.getElementById("tr-loc2").value;
+          const toTitle = document.getElementById("tr-title2").value;
+          fetch(
+            "http://10.200.1.172:8000/addtools?ft=" +
+              fromTitle +
+              "&fl=" +
+              fromLoc +
+              "&tt=" +
+              toTitle +
+              "&tl=" +
+              toLoc
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              const add = document.getElementById("tr-add");
+              data.forEach((tool) => {
+                let t = document.createElement("p");
+                t.textContent = tool;
+                t.classList.add("tool");
+                t.classList.add("container-rel");
+                t.addEventListener("click", () => {
+                  t.classList.toggle("selected");
+                });
+                add.appendChild(t);
+              });
+            });
+          fetch(
+            "http://10.200.1.172:8000/removetools?ft=" +
+              fromTitle +
+              "&fl=" +
+              fromLoc +
+              "&tt=" +
+              toTitle +
+              "&tl=" +
+              toLoc
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              const remove = document.getElementById("tr-remove");
+              data.forEach((tool) => {
+                let t = document.createElement("p");
+                t.textContent = tool;
+                t.classList.add("tool");
+                t.classList.add("container-rel");
+                t.addEventListener("click", () => {
+                  t.classList.toggle("selected");
+                });
+                remove.appendChild(t);
+              });
+              document.getElementById("tr-tools").style.display = "flex";
+            });
+          fetch(
+            "http://10.200.1.172:8000/changetools?ft=" +
+              fromTitle +
+              "&fl=" +
+              fromLoc +
+              "&tt=" +
+              toTitle +
+              "&tl=" +
+              toLoc
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              const remove = document.getElementById("tr-change");
+              data.forEach((tool) => {
+                let t = document.createElement("p");
+                t.textContent = tool;
+                t.classList.add("tool");
+                t.classList.add("container-rel");
+                t.addEventListener("click", () => {
+                  t.classList.toggle("selected");
+                });
+                remove.appendChild(t);
+              });
+            });
+        });
+
+      function displaySection(section) {
+        document.querySelectorAll(".alist").forEach((div) => {
+          div.classList.remove("active");
+        });
+        document.getElementById('overlay-title').innerHTML ='';
+        document.getElementById('overlay-content').innerHTML ='';
+
+        document.getElementById(section).classList.add("active");
+      }
+    </script>
+  </body>
+</html>
