@@ -104,11 +104,12 @@
             <div class="nh-tools" id="nh-tools"></div>
           </div>
         </div>
-        <div id="nh-overlay" class="nh-overlay container nhtile">
+        <div id="nh-overlay" class="overlay container nhtile">
           <div id="nh-overlay-title" class="nh-overlay-tile"></div>
-          <div id="nh-overlay-content" class="nh-overlay-tile nh-ov-tile-bottom nhtile"></div>
+          <div id="nh-overlay-content" class="nh-overlay-tile nhtile"></div>
         </div>
       </div>
+      <div class="tr-wrap">
       <div id="transfer" class="container alist">
         <div class="main-tile transfer">Transfer</div>
         <div class="selects">
@@ -128,6 +129,11 @@
             <p class="changetip container-rel">Change</p>
           </div>
         </div>
+      </div>
+      <div id="tr-overlay" class="overlay container">
+        <div id="tr-overlay-title" class="overlay-tile"></div>
+        <div id="tr-overlay-content" class="overlay-tile nhtile"></div>
+      </div>
       </div>
       <div id="promo" class="container alist">
         <div class="main-tile promo">Promotion</div>
@@ -371,8 +377,24 @@
                 remove.appendChild(t);
               });
             });
+          fetch("http://10.200.1.172:8000/store-info/" + document.getElementById('tr-loc2').value)
+            .then((re) => re.json())
+            .then((info) => {
+              const title = document.getElementById("tr-overlay-title");
+              title.innerHTML = "Store Info";
+              const cont = document.getElementById("tr-overlay-content");
+              cont.innerHTML = "";
+              cont.style.display = "block";
+              info.forEach((inf) => {
+                const p = document.createElement("p");
+                p.textContent = inf;
+                p.classList.add("pt");
+                p.classList.add("container");
+                cont.appendChild(p);
+              });
+            });
+          document.getElementById('tr-overlay').style.display = 'flex';
         });
-
       function displaySection(section) {
         document.querySelectorAll(".alist").forEach((div) => {
           div.classList.remove("active");
