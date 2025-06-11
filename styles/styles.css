@@ -22,7 +22,6 @@
     display: none;
     flex-direction: column;
     text-align: center;
-    width: 30%;
     margin: 10px auto;
 }
 
@@ -162,6 +161,21 @@ body {
     filter: brightness(50%);
 }
 
+.nh-overlay {
+    margin: 10px;
+}
+
+.nh-overlay-tile {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 5px 20px;
+}
+
+.nh-ov-tile-bottom {
+    justify-content: end;
+}
+
 .nh-tools {
     position: relative;
     display: flex;
@@ -185,13 +199,15 @@ body {
     margin: 10px 0px 0px 0px;
 }
 
-.overlay {
-    
-    margin: 0px;
+.nh-wrap {
+    display: flex;
+    flex-direction: row;
 }
+
 .pt {
     border-color: var(--nav-border-darker);
     background-color: var(--nav-border);
+    padding: 0px 10px 0px 10px;
 }
 
 .sel {
@@ -277,4 +293,5 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    width: 100%; 
 }

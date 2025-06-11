@@ -85,73 +85,75 @@
       </div>
     </div>
     <div class="wrapall">
-    <div id="newhire" class="container alist">
-      <div class="wrap">
-        <div class="main-tile newhire">New Hire</div>
+      <div class="nh-wrap">
+        <div id="newhire" class="container alist">
+          <div class="wrap">
+            <div class="main-tile newhire">New Hire</div>
+            <div class="selects">
+              <select class="sel sel-left" id="nh-loc">
+                <option>Option</option>
+                <option>Option</option>
+                <option>Option</option>
+              </select>
+              <select class="sel sel-right" id="nh-title">
+                <option>Option</option>
+                <option>Option</option>
+                <option>Option</option>
+              </select>
+            </div>
+            <div class="nh-tools" id="nh-tools"></div>
+          </div>
+        </div>
+        <div id="nh-overlay" class="nh-overlay container nhtile">
+          <div id="nh-overlay-title" class="nh-overlay-tile"></div>
+          <div id="nh-overlay-content" class="nh-overlay-tile nh-ov-tile-bottom nhtile"></div>
+        </div>
+      </div>
+      <div id="transfer" class="container alist">
+        <div class="main-tile transfer">Transfer</div>
         <div class="selects">
-          <select class="sel sel-left" id="nh-loc">
-            <option>Option</option>
-            <option>Option</option>
-            <option>Option</option>
-          </select>
-          <select class="sel sel-right" id="nh-title">
-            <option>Option</option>
-            <option>Option</option>
-            <option>Option</option>
-          </select>
+          <select class="sel sel-left" id="tr-loc1"></select>
+          <select class="sel sel-right" id="tr-title1"></select>
+          <select class="sel sel-right" id="tr-loc2"></select>
+          <select class="sel sel-right" id="tr-title2"></select>
         </div>
-        <div class="nh-tools" id="nh-tools"></div>
-      </div>
-    </div>
-    <div id="transfer" class="container alist">
-      <div class="main-tile transfer">Transfer</div>
-      <div class="selects">
-        <select class="sel sel-left" id="tr-loc1"></select>
-        <select class="sel sel-right" id="tr-title1"></select>
-        <select class="sel sel-right" id="tr-loc2"></select>
-        <select class="sel sel-right" id="tr-title2"></select>
-      </div>
-      <div id="tr-tools" class="">
-        <div id="tr-add" class="add container-rel">
-          <p class="addtip container-rel">Add</p>
-        </div>
-        <div id="tr-remove" class="remove container-rel">
-          <p class="removetip container-rel">Remove</p>
-        </div>
-        <div id="tr-change" class="change container-rel">
-          <p class="changetip container-rel">Change</p>
+        <div id="tr-tools" class="">
+          <div id="tr-add" class="add container-rel">
+            <p class="addtip container-rel">Add</p>
+          </div>
+          <div id="tr-remove" class="remove container-rel">
+            <p class="removetip container-rel">Remove</p>
+          </div>
+          <div id="tr-change" class="change container-rel">
+            <p class="changetip container-rel">Change</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="promo" class="container alist">
-      <div class="main-tile promo">Promotion</div>
-      <div class="selects">
-        <select class="sel sel-left" id="pr-loc"></select>
-        <select class="sel sel-right" id="pr-frtitle"></select>
-        <select class="sel sel-right" id="pr-totitle"></select>
+      <div id="promo" class="container alist">
+        <div class="main-tile promo">Promotion</div>
+        <div class="selects">
+          <select class="sel sel-left" id="pr-loc"></select>
+          <select class="sel sel-right" id="pr-frtitle"></select>
+          <select class="sel sel-right" id="pr-totitle"></select>
+        </div>
+        <div id="pr-tools" class="">
+          <div id="pr-add" class="add container-rel">
+            <p class="addtip container-rel">Add</p>
+          </div>
+          <div id="pr-remove" class="remove container-rel">
+            <p class="removetip container-rel">Remove</p>
+          </div>
+          <div id="pr-change" class="change container-rel">
+            <p class="changetip container-rel">Change</p>
+          </div>
+        </div>
       </div>
-      <div id="pr-tools" class="">
-        <div id="pr-add" class="add container-rel">
-          <p class="addtip container-rel">Add</p>
-        </div>
-        <div id="pr-remove" class="remove container-rel">
-          <p class="removetip container-rel">Remove</p>
-        </div>
-        <div id="pr-change" class="change container-rel">
-          <p class="changetip container-rel">Change</p>
-        </div>
+      <div id="term" class="container alist">
+        <div class="main-tile term">Termination</div>
       </div>
-    </div>
-    <div id="term" class="container alist">
-      <div class="main-tile term">Termination</div>
-    </div>
-    <div id="rehire" class="container alist">
-      <div class="main-tile rehire">Rehire</div>
-    </div>
-    <div id="overlay" class="container overlay">
-      <div id="overlay-title"></div>
-      <div id="overlay-content"></div>
-    </div>
+      <div id="rehire" class="container alist">
+        <div class="main-tile rehire">Rehire</div>
+      </div>
     </div>
     <script>
       // New Hire
@@ -200,6 +202,7 @@
                 p.textContent = tool;
                 p.classList.add("pt");
                 p.classList.add("container");
+                p.classList.add("nhtile");
                 p.addEventListener("click", () => {
                   p.classList.toggle("selected");
                 });
@@ -209,9 +212,9 @@
           fetch("http://10.200.1.172:8000/store-info/" + loc)
             .then((re) => re.json())
             .then((info) => {
-              const title = document.getElementById('overlay-title');
+              const title = document.getElementById("nh-overlay-title");
               title.innerHTML = "Store Info";
-              const cont = document.getElementById("overlay-content");
+              const cont = document.getElementById("nh-overlay-content");
               cont.innerHTML = "";
               cont.style.display = "block";
               info.forEach((inf) => {
@@ -373,8 +376,6 @@
         document.querySelectorAll(".alist").forEach((div) => {
           div.classList.remove("active");
         });
-        document.getElementById('overlay-title').innerHTML ='';
-        document.getElementById('overlay-content').innerHTML ='';
 
         document.getElementById(section).classList.add("active");
       }
