@@ -110,8 +110,8 @@
             <div class="nh-tools" id="nh-overlay-content"></div>
         </div>
       </div>
-      <div class="tr-wrap alist">
-      <div id="transfer" class="container alist">
+      <div id="transfer" class="tr-wrap alist">
+      <div class="container tr-left">
         <div class="main-tile transfer">Transfer</div>
         <div class="selects">
           <select class="sel sel-left" id="tr-loc1"></select>
@@ -131,8 +131,8 @@
           </div>
         </div>
       </div>
-      <div id="tr-overlay" class="overlay container alist">
-        <div id="tr-overlay-title" class="overlay-tile"></div>
+      <div id="tr-overlay" class="">
+        <div id="tr-overlay-title" class="main-tile"></div>
         <div id="tr-overlay-content" class="overlay-tile nhtile"></div>
       </div>
       </div>
@@ -354,6 +354,7 @@
                 remove.appendChild(t);
               });
               document.getElementById("tr-tools").style.display = "flex";
+              document.getElementById("tr-overlay").style.display = "flex";
             });
           fetch(
             "http://10.200.1.172:8000/changetools?ft=" +

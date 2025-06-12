@@ -11,8 +11,6 @@
     --selected: #98f599;
 }
 
-
-
 .alist.active {
     display: flex;
 }
@@ -131,6 +129,7 @@ body {
 .main-tile {
     font-weight: bold;
     font-size: 4rem;
+    font-family: var(--text-family);
 }
 .navbar {
     background-color: var(--nav-color);
@@ -257,8 +256,22 @@ body {
     border: 3px solid var(--nav-border-darker);
 }
 
+.tr-left {
+    padding: 10px;
+}
+
+#tr-overlay {
+    display: none;
+    flex-direction: column;
+    background-color: var(--nav-color);
+    border: 3px solid var(--nav-border);
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #111;
+    margin-left: 10px;
+}
+
 #tr-tools {
-    display: flex;
+    display: none;
     justify-content: space-evenly;
     flex-direction: row;
 }
@@ -266,6 +279,7 @@ body {
 .tr-wrap {
     display: none;
     flex-direction: row;
+    padding: 10px;
 }
 
 .add, .remove, .change {
