@@ -197,6 +197,18 @@ body {
     margin: 10px 0px 0px 0px;
 }
 
+.nh-overlay {
+    justify-content: flex-end;
+    height: 100%;
+}
+
+#nh-overlay-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: 0;
+}
+
 .nh-wrap {
     display: flex;
     flex-direction: row;
@@ -230,6 +242,10 @@ body {
     background-color: var(--selected);
 }
 
+.spacer2rem {
+    height: 3.25rem;
+}
+
 .tool-con {
     background-color: var(--nav-color);
     border: 3px solid var(--nav-border);
@@ -248,7 +264,7 @@ body {
 }
 
 .tr-wrap {
-    display: flex;
+    display: none;
     flex-direction: row;
 }
 

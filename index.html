@@ -104,12 +104,13 @@
             <div class="nh-tools" id="nh-tools"></div>
           </div>
         </div>
-        <div id="nh-overlay" class="overlay container nhtile">
-          <div id="nh-overlay-title" class="nh-overlay-tile"></div>
-          <div id="nh-overlay-content" class="nh-overlay-tile nhtile"></div>
+        <div id="nh-overlay" class="overlay container nhtile alist">
+          <div id="nh-overlay-title" class="main-tile newhire"></div>
+            <div class="spacer2rem"></div>
+            <div class="nh-tools" id="nh-overlay-content"></div>
         </div>
       </div>
-      <div class="tr-wrap">
+      <div class="tr-wrap alist">
       <div id="transfer" class="container alist">
         <div class="main-tile transfer">Transfer</div>
         <div class="selects">
@@ -130,7 +131,7 @@
           </div>
         </div>
       </div>
-      <div id="tr-overlay" class="overlay container">
+      <div id="tr-overlay" class="overlay container alist">
         <div id="tr-overlay-title" class="overlay-tile"></div>
         <div id="tr-overlay-content" class="overlay-tile nhtile"></div>
       </div>
@@ -228,10 +229,11 @@
                 p.textContent = inf;
                 p.classList.add("pt");
                 p.classList.add("container");
+                p.classList.add('nhtile');
                 cont.appendChild(p);
               });
             });
-          document.getElementById('nh-overlay').style.display = 'flex';
+          document.getElementById('nh-overlay').classList.add('active');
         });
 
       // Transfer
@@ -393,14 +395,14 @@
                 cont.appendChild(p);
               });
             });
-          document.getElementById('tr-overlay').style.display = 'flex';
+          document.getElementById('tr-overlay').classList.add('active');
         });
       function displaySection(section) {
         document.querySelectorAll(".alist").forEach((div) => {
           div.classList.remove("active");
         });
 
-        document.getElementById(section).classList.add("active");
+        document.getElementById(section).classList.add('active');
       }
     </script>
   </body>
