@@ -405,6 +405,90 @@
 
         document.getElementById(section).classList.add('active');
       }
+      // Promotion
+      fetch('http://10.200.1.172:8000/locations')
+                .then(res => res.json())
+                .then(data => {
+                    const fl = document.getElementById('pr-loc');
+                    fl.innerHTML = '<option value="">--Select--</option>';
+                    data.forEach(loc => {
+                        let opt = document.createElement('option');
+                        opt.value = loc;
+                        opt.textContent = loc;
+                        fl.appendChild(opt);
+                    } )
+                })
+            document.getElementById('pr-loc').addEventListener('change', function () {
+                const location = this.value;
+                fetch('http://10.200.1.172:8000/jobs/' + location)
+                    .then(res => res.json())
+                    .then(data => {
+                        const jobSelect = document.getElementById('pr-frtitle');
+                        const toSel = document.getElementById('pr-totitle');
+                        jobSelect.innerHTML = '<option value="">--Select--</option>';
+                        data.forEach(job => {
+                            console.log("adding job: ", job);
+                            let opt = document.createElement('option');
+                            opt.value = job;
+                            opt.textContent = job;
+                            jobSelect.appendChild(opt);
+                        })
+                        toSel.innerHTML = jobSelect.innerHTML;
+                    })
+            });
+            document.getElementById('pr-totitle').addEventListener('change', function () {
+                const fromLoc = document.getElementById('pr-loc').value;
+                const fromTitle = document.getElementById('pr-frtitle').value;
+                const toLoc = document.getElementById('pr-loc').value;
+                const toTitle = document.getElementById('pr-totitle').value;
+                fetch('http://10.200.1.172:8000/addtools?ft='+fromTitle+'&fl='+fromLoc+'&tt='+toTitle+'&tl='+toLoc)
+                    .then(res => res.json())
+                    .then(data => {
+                        const add = document.getElementById('pr-add');
+                        data.forEach(tool => {
+                            let t = document.createElement('p');
+                            t.textContent = tool;
+                            t.classList.add('tool');
+                            t.classList.add('container')
+                            t.addEventListener('click', () => {
+                                t.classList.toggle('selected');
+                            });
+                            add.appendChild(t);
+                        })
+                    })
+                fetch('http://10.200.1.172:8000/removetools?ft='+fromTitle+'&fl='+fromLoc+'&tt='+toTitle+'&tl='+toLoc)
+                    .then(res => res.json())
+                    .then(data => {
+                        const remove = document.getElementById('pr-remove');
+                        data.forEach(tool => {
+                            let t = document.createElement('p');
+                            t.textContent = tool;
+                            t.classList.add('tool');
+                            t.classList.add('container')
+                            t.addEventListener('click', () => {
+                                t.classList.toggle('selected');
+                            });
+                            remove.appendChild(t);
+                        })
+                    })
+                fetch('http://10.200.1.172:8000/changetools?ft='+fromTitle+'&fl='+fromLoc+'&tt='+toTitle+'&tl='+toLoc)
+                    .then(res => res.json())
+                    .then(data => {
+                        const remove = document.getElementById('pr-change');
+                        data.forEach(tool => {
+                            let t = document.createElement('p');
+                            t.textContent = tool;
+                            t.classList.add('tool');
+                            t.classList.add('container')
+                            t.addEventListener('click', () => {
+                                t.classList.toggle('selected');
+                            });
+                            remove.appendChild(t);
+                        })
+                        document.getElementById('pr-tools').style.display = 'flex';
+                    })
+                
+            });
     </script>
   </body>
 </html>

@@ -213,6 +213,11 @@ body {
     flex-direction: row;
 }
 
+#pr-tools {
+    display: none;
+    flex-direction: row;
+    justify-content: space-around;
+}
 .pt {
     border-color: var(--nav-border-darker);
     background-color: var(--nav-border);
