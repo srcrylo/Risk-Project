@@ -173,20 +173,42 @@
           <div class="ter-tools" id="ter-tools"></div>
         </div>
         <div id="ter-store-info" class="container alist ter-store-info">
-                <p class="container pt">Disable in AD</p>
-                <p class="container pt">Change AD Description</p>
-                <p class="container pt">Hide from GAL</p>
-                <p class="container pt">Remove from Groups in AD</p>
-                <p class="container pt">Initiate & Block Sign Out</p>
-                <p class="container pt">Reset PW</p>
-                <p class="container pt">Remove Auto Reply</p>
-                <p class="container pt">Set Email FW</p>
-                <p class="container pt">Convert to Shared</p>
-                <p class="container pt">Remove O365 License</p>
-            </div>
+          <p class="container pt">Disable in AD</p>
+          <p class="container pt">Change AD Description</p>
+          <p class="container pt">Hide from GAL</p>
+          <p class="container pt">Remove from Groups in AD</p>
+          <p class="container pt">Initiate & Block Sign Out</p>
+          <p class="container pt">Reset PW</p>
+          <p class="container pt">Remove Auto Reply</p>
+          <p class="container pt">Set Email FW</p>
+          <p class="container pt">Convert to Shared</p>
+          <p class="container pt">Remove O365 License</p>
+        </div>
       </div>
-      <div id="rehire" class="container alist">
-        <div class="main-tile rehire">Rehire</div>
+      <div id="rehire" class="re-wrap alist">
+        <div class="container wrapnh">
+          <div class="wrap">
+            <div class="main-tile newhire">Rehire</div>
+            <div class="selects">
+              <select class="sel sel-left" id="re-loc">
+                <option>Option</option>
+                <option>Option</option>
+                <option>Option</option>
+              </select>
+              <select class="sel sel-right" id="re-title">
+                <option>Option</option>
+                <option>Option</option>
+                <option>Option</option>
+              </select>
+            </div>
+            <div class="re-tools" id="re-tools"></div>
+          </div>
+        </div>
+        <div id="re-overlay" class="overlay container nhtile alist">
+          <div id="re-overlay-title" class="main-tile newhire"></div>
+          <div class="spacer2rem"></div>
+          <div class="nh-tools" id="re-overlay-content"></div>
+        </div>
       </div>
     </div>
     <script>
@@ -602,7 +624,80 @@
                 container.appendChild(p);
               });
             });
-          document.getElementById('ter-store-info').style.display = 'flex';
+          document.getElementById("ter-store-info").style.display = "flex";
+        });
+      // Rehire
+      fetch("http://10.200.1.172:8000/locations")
+        .then((res) => res.json())
+        .then((data) => {
+          const locations = document.getElementById("re-loc");
+          locations.innerHTML = '<option value="">--Select--</option>';
+          data.forEach((loc) => {
+            console.log("adding loc: ", loc);
+            let opt = document.createElement("option");
+            opt.value = loc;
+            opt.textContent = loc;
+            locations.appendChild(opt);
+          });
+        });
+      document.getElementById("re-loc").addEventListener("change", function () {
+        const location = this.value;
+        fetch("http://10.200.1.172:8000/jobs/" + location)
+          .then((res) => res.json())
+          .then((data) => {
+            const jobSelect = document.getElementById("re-title");
+            jobSelect.innerHTML = '<option value="">--Select--</option>';
+            data.forEach((job) => {
+              console.log("adding job: ", job);
+              let opt = document.createElement("option");
+              opt.value = job;
+              opt.textContent = job;
+              jobSelect.appendChild(opt);
+            });
+          });
+      });
+      document
+        .getElementById("re-title")
+        .addEventListener("change", function () {
+          const job = document.getElementById("re-title").value;
+          const loc = document.getElementById("re-loc").value;
+
+          fetch("http://10.200.1.172:8000/tools?job=" + job + "&loc=" + loc)
+            .then((res) => res.json())
+            .then((tools) => {
+              const container = document.getElementById("re-tools");
+              container.innerHTML = "";
+              tools.forEach((tool) => {
+                const p = document.createElement("p");
+                p.textContent = tool;
+                p.classList.add("pt");
+                p.classList.add("container");
+                p.classList.add("nhtile");
+                p.addEventListener("click", () => {
+                  p.classList.toggle("selected");
+                });
+                container.appendChild(p);
+              });
+            });
+          fetch("http://10.200.1.172:8000/store-info/" + loc)
+            .then((re) => re.json())
+            .then((info) => {
+              const title = document.getElementById("re-overlay-title");
+              title.innerHTML = "Store Info";
+              const cont = document.getElementById("re-overlay-content");
+              cont.innerHTML = "";
+              cont.style.display = "block";
+              info.forEach((inf) => {
+                const p = document.createElement("p");
+                p.textContent = inf;
+                p.classList.add("pt");
+                p.classList.add("container");
+                p.classList.add("nhtile");
+                cont.appendChild(p);
+              });
+            });
+          document.getElementById("rehire").style.display = 'flex';
+          document.getElementById("re-overlay").style.display = 'flex';
         });
     </script>
   </body>

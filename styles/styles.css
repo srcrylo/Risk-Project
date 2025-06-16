@@ -189,7 +189,7 @@ body {
     margin:10px 0px 0px 0px;
 }
 
-.nh-tools p, .ter-tools p, .ter-store-info p {
+.nh-tools p, .ter-tools p, .ter-store-info p, #re-tools p, #re-overlay-content p, #re-overlay-title {
     position: relative;
     font-size: 2rem;
     font-weight: bold;
@@ -223,6 +223,18 @@ body {
     background-color: var(--nav-border);
     padding: 0px 10px 0px 10px;
 }
+
+#re-overlay {
+    height: 100%;
+}
+#re-overlay-title {
+    font-size: 4rem;
+    margin-top: 0px;
+}
+#rehire {
+    flex-direction: row;
+}
+
 
 .sel {
     font-family: var(--text-family);
@@ -351,4 +363,5 @@ body {
     flex-direction: column;
     text-align: center;
     margin: 10px auto;
+    height: 100%;
 }
