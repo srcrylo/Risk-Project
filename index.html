@@ -47,7 +47,7 @@
           <div class="dropdown-opt">
             <div class="dropdown-opt-tile">Create</div>
             <div class="dropdown-subs">
-              <div class="dropdown-opt">Create Tool</div>
+              <div class="dropdown-opt" onclick="displaySection('create-tool')">Create Tool</div>
               <hr class="dropdown-divider" />
               <div class="dropdown-opt">Create Title</div>
             </div>
@@ -208,6 +208,16 @@
           <div id="re-overlay-title" class="main-tile newhire"></div>
           <div class="spacer2rem"></div>
           <div class="nh-tools" id="re-overlay-content"></div>
+        </div>
+      </div>
+      <div id="create-tool" class="alist container">
+        <div class="">
+        <div class="container tile-title">Create Job Tool</div>
+        <div class="container tile-group">
+          <input type="text" id="cr-jt-text" placeholder="Tool name..."/>
+          <button id="cr-jt-sub">Submit</button>
+        </div>
+        
         </div>
       </div>
     </div>
@@ -699,6 +709,26 @@
           document.getElementById("rehire").style.display = 'flex';
           document.getElementById("re-overlay").style.display = 'flex';
         });
+        // Create Job Tool
+        document.getElementById('cr-jt-sub').addEventListener('click', function () {
+                const tool = document.getElementById('cr-jt-text').value;
+                fetch('http://10.200.1.172:8000/createtool?tool=' + tool)
+                .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        return response.json();
+                    })
+                    .then(updatedResource => {
+                        console.log('Tool created:' + updatedResource);
+                        alert('Tool created:'+ updatedResource);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation: ', error);
+                    });
+                    
+            });
     </script>
   </body>
 </html>

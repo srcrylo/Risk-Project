@@ -52,6 +52,18 @@ body {
     background-color: green;
 }
 
+#cr-jt-sub {
+    text-align: center;
+    font-size: 2rem;
+    margin: 10px 20px;
+}
+
+#cr-jt-text {
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 10px 20px;
+}
+
 .dropdown {
     font-family: var(--text-family), sans-serif;
     font-weight: bold;
@@ -213,6 +225,10 @@ body {
     flex-direction: row;
 }
 
+.popup {
+    
+}
+
 #pr-tools {
     display: none;
     flex-direction: row;
@@ -283,6 +299,19 @@ body {
     text-align: center;
     background-color: var(--nav-border);
     border: 3px solid var(--nav-border-darker);
+}
+
+.tile-group {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.tile-title {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 10px 20px;
 }
 
 .tr-left {
