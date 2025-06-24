@@ -52,13 +52,13 @@ body {
     background-color: green;
 }
 
-#cr-jt-sub {
+#cr-jt-sub, #cr-jtitle-sub {
     text-align: center;
     font-size: 2rem;
     margin: 10px 20px;
 }
 
-#cr-jt-text {
+#cr-jt-text, #cr-jtitle-text1, #cr-jtitle-text2 {
     text-align: center;
     font-size: 1.5rem;
     margin: 10px 20px;
@@ -78,7 +78,11 @@ body {
     padding-left: 10px;
     padding-right: 10px;
     width: 11rem;
+    height: 100%;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dropdown:hover {
@@ -98,7 +102,7 @@ body {
 .dropdown-options {
     position: absolute;
     text-align: center;
-    top: 102%;
+    top: 100%;
     left: 0;
     display: none;
     transition: all 0.3s ease;
@@ -142,6 +146,13 @@ body {
     font-weight: bold;
     font-size: 4rem;
     font-family: var(--text-family);
+}
+
+.nav-element {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 .navbar {
     background-color: var(--nav-color);

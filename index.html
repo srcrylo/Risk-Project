@@ -49,7 +49,7 @@
             <div class="dropdown-subs">
               <div class="dropdown-opt" onclick="displaySection('create-tool')">Create Tool</div>
               <hr class="dropdown-divider" />
-              <div class="dropdown-opt">Create Title</div>
+              <div class="dropdown-opt" onclick="displaySection('create-job-entry')">Create Title</div>
             </div>
           </div>
           <hr class="dropdown-divider" />
@@ -218,6 +218,18 @@
           <button id="cr-jt-sub">Submit</button>
         </div>
         
+        </div>
+      </div>
+      <div id="create-job-entry" class="alist container">
+        <div>
+          <div class="container tile-title">Create Job Entry</div>
+          <div class="container tile-group">
+            <div class="text-horizontal">
+              <input type="text" id="cr-jtitle-text1" placeholder="Location..." />
+              <input type="text" id="cr-jtitle-text2" placeholder="Job Title... " />
+            </div>
+            <button id="cr-jtitle-sub">Submit</button>
+          </div>
         </div>
       </div>
     </div>
@@ -461,6 +473,7 @@
           document.getElementById("tr-overlay").classList.add("active");
         });
       function displaySection(section) {
+
         document.querySelectorAll(".alist").forEach((div) => {
           div.classList.remove("active");
         });
@@ -721,14 +734,34 @@
                         return response.json();
                     })
                     .then(updatedResource => {
-                        console.log('Tool created:' + updatedResource);
-                        alert('Tool created:'+ updatedResource);
+                        console.log(updatedResource.message);
+                        alert(updatedResource.message);
                     })
                     .catch(error => {
                         console.error('There was a problem with the fetch operation: ', error);
                     });
                     
             });
+        // Create Job Entry
+        document.getElementById('cr-jtitle-sub').addEventListener('click', function() {
+          const location = document.getElementById('cr-jtitle-text1').value;
+          const title = document.getElementById('cr-jtitle-text2').value;
+          fetch('http://10.200.1.172:8000/createtitle?title=' + title +'&location=' + location)
+          .then(response => {
+            if(!response.ok) {
+              throw new Error('HTTP Error! Status: ${response.status}');
+            }
+
+            return response.json();
+          })
+          .then(updatedResource => {
+            alert(updatedResource.message);
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation: ', error);
+          })
+          
+        });
     </script>
   </body>
 </html>
