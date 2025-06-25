@@ -142,6 +142,12 @@ body {
     border-bottom: 3px solid var(--nav-border);
 }
 
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 10px;
+}
 .main-tile {
     font-weight: bold;
     font-size: 4rem;
@@ -352,6 +358,22 @@ body {
     margin-top: 0px;
 }
 
+.four-column {
+    columns: 4;
+    display: inline-block;
+    padding: 20px;
+}
+
+.four-column p {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.tool-item {
+    margin-top: 0px;
+}
 
 .tr-left {
     padding: 10px;
@@ -411,6 +433,22 @@ body {
 
 .changetip {
     color: yellow;
+}
+
+.update-sel {
+    margin: 10px;
+    width: 50%;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#update-checks {
+    margin-top: 10px;
+}
+
+#update-sub {
+    font-size: 1.5rem;
+    margin-top: 10px;
 }
 
 .vr {

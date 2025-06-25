@@ -68,7 +68,7 @@
           <div class="dropdown-opt">
             <div class="dropdown-opt-tile">Update</div>
             <div class="dropdown-subs">
-              <div class="dropdown-opt">Update Entry</div>
+              <div class="dropdown-opt" onclick="displaySection('update-entry')">Update Entry</div>
             </div>
           </div>
           <hr class="dropdown-divider" />
@@ -245,6 +245,15 @@
       <div id="read-tools" class="alist container">
         <div class="container tile-title">Read All Tools</div>
         <div class="container three-column" id="read-tools-cont"></div>
+      </div>
+      <div id="update-entry" class="alist container">
+        <div class="container tile-title">Update Job Title Access List</div>
+        <div class="container flex-row">
+          <select id="update-loc" class="update-sel"></select>
+          <select id="update-title" class="update-sel"></select>
+        </div>
+        <div class="container four-column" id="update-checks"></div>
+        <button id="update-sub">Submit</button>
       </div>
     </div>
     <script>
@@ -836,7 +845,147 @@
                     p.classList.add('container');
                     container.appendChild(p);
                 });
-            });       
+            });
+        // Update Entry
+        fetch('http://10.200.1.172:8000/locations')
+                .then(res => res.json())
+                .then(data => {
+                    const locations = document.getElementById('update-loc');
+                    locations.innerHTML = '<option value="">--Select--</option>';
+                    data.forEach(loc => {
+                        console.log("adding loc: ", loc);
+                        let opt = document.createElement('option');
+                        opt.value = loc;
+                        opt.textContent = loc;
+                        locations.appendChild(opt);
+                    })
+                });
+        document.getElementById('update-loc').addEventListener('change', function () {
+                const location = this.value;
+                fetch('http://10.200.1.172:8000/jobs/' + location)
+                    .then(res => res.json())
+                    .then(data => {
+                        const jobSelect = document.getElementById('update-title');
+                        jobSelect.innerHTML = '<option value="">--Select--</option>';
+                        data.forEach(job => {
+                            console.log("adding job: ", job);
+                            let opt = document.createElement('option');
+                            opt.value = job;
+                            opt.textContent = job;
+                            let ch = document.createElement('input');
+                            ch.type='checkbox';
+                            jobSelect.appendChild(opt,ch);
+                        })
+                    })
+            });
+        fetch('http://10.200.1.172:8000/alltools')
+                .then(res => res.json())
+                .then(data => {
+                    const checks = document.getElementById('update-checks');
+                    data.forEach(tool => {
+                        console.log("adding tool: ", tool);
+                        let pa = document.createElement('p');
+                        pa.classList.add('container');
+                        pa.classList.add('tool-item')
+
+                        let cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.id = tool;
+                        cb.value = tool;
+                        cb.classList.add('cb');
+
+                        let span = document.createElement('span');
+                        span.textContent = tool;
+
+                        pa.appendChild(cb);
+                        pa.appendChild(span);
+
+                        checks.appendChild(pa);
+                    });
+                });
+        document.getElementById('update-title').addEventListener('change', function () {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                let location = document.getElementById('update-loc').value;
+                let jobtitle = document.getElementById('update-title').value;
+                checkboxes.forEach(box => {
+                    box.checked = false;
+                    fetch('http://10.200.1.172:8000/checktool?title=' + jobtitle + '&loc=' + location + '&tool=' + box.value)
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data[0]) {
+                                box.checked = true;
+                            }
+                        });
+                });
+            });
+        document.getElementById('update-sub').addEventListener('click', function () {
+                const checkedTools = [];
+
+                //Select all checkboxes by type
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+                checkboxes.forEach(cb => {
+                    if (cb.checked) {
+                        checkedTools.push(cb.value);
+                    }
+                });
+                
+                const endCheckedTools = [];
+                const unCheckedTools = [];
+                checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                  if (cb.checked) {
+                    endCheckedTools.push(cb.value);
+                  } else {
+                    unCheckedTools.push(cb.value);
+                  }
+                });
+                endCheckedTools.forEach(ct => {
+                  const d = {
+                    title: document.getElementById('update-title').value,
+                    location: document.getElementById('update-loc').value,
+                    tool: ct,
+                    flag: 1
+                  };
+                  fetch('http://10.200.1.172:8000/updatetool?title=' + d.title + '&loc=' + d.location + '&tool=' + d.tool + '&flag=' + d.flag)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        return response.json();
+                    })
+                    .then(updatedResource => {
+                        console.log(updatedResource.message);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation: ', error);
+                    })
+                });
+                unCheckedTools.forEach(ct => {
+                  const d = {
+                    title: document.getElementById('update-title').value,
+                    location: document.getElementById('update-loc').value,
+                    tool: ct,
+                    flag: 0
+                  }
+                  fetch('http://10.200.1.172:8000/updatetool?title=' + d.title + '&loc=' + d.location + '&tool=' + d.tool + '&flag=' + d.flag)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        return response.json();
+                    })
+                    .then(updatedResource => {
+                        console.log(updatedResource.message);
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation: ', error);
+                    })
+                });  
+            });   
+            
     </script>
   </body>
 </html>
