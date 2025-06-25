@@ -64,6 +64,11 @@ body {
     margin: 10px 20px;
 }
 
+#delete-tool-sel, #delete-tool-sub {
+    margin: 10px;
+    font-size: 2rem;
+    text-align: center;
+}
 .dropdown {
     font-family: var(--text-family), sans-serif;
     font-weight: bold;

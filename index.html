@@ -75,7 +75,7 @@
           <div class="dropdown-opt">
             <div class="dropdown-opt-tile">Delete</div>
             <div class="dropdown-subs">
-              <div class="dropdown-opt">Delete Tool</div>
+              <div class="dropdown-opt" onclick="displaySection('delete-tool')">Delete Tool</div>
               <hr class="dropdown-divider" />
               <div class="dropdown-opt">Delete Title</div>
             </div>
@@ -254,6 +254,14 @@
         </div>
         <div class="container four-column" id="update-checks"></div>
         <button id="update-sub">Submit</button>
+      </div>
+      <div id="delete-tool" class="alist container">
+        <div class="container tile-title">Delete Tool</div>
+        <div class="container tile-group">
+        <select id="delete-tool-sel"></select>
+        <button id="delete-tool-sub">Submit</button>
+        </div>
+        
       </div>
     </div>
     <script>
@@ -986,6 +994,40 @@
                 });  
             });   
             
+            // Delete Tool
+            fetch('http://10.200.1.172:8000/alltools')
+        .then(res => res.json())
+        .then(tools => {
+            const sel = document.getElementById('delete-tool-sel');
+            sel.innerHTML = '<option value="">--Select--</option>';
+            tools.forEach(tool => {
+                let opt = document.createElement('option');
+                opt.value = tool;
+                opt.textContent = tool;
+                sel.appendChild(opt);
+            })
+        });
+        document.getElementById('delete-tool-sub').addEventListener('click', function () {
+          const tool = document.getElementById('delete-tool-sel').value;
+          fetch('http://10.200.1.172:8000/deletetool?tool=' + tool)
+          .then(response => {
+            if(!response.ok) {
+              throw new Error(`HTTP Error! status: ${response.status}`);
+            }
+
+            return response.json();
+          })
+          .then(updatedResource => {
+            if(confirm(updatedResource.message)) {
+              location.reload();
+            } else {
+              location.reload();
+            }
+          })
+          .catch(error => {
+            console.error(error.message);
+          })
+        });
     </script>
   </body>
 </html>
