@@ -823,6 +823,21 @@
             document.getElementById('read-jobs-location-cont').style.display = 'inline-block';
           })
         });
+
+        // Read All Tools
+        fetch('http://10.200.1.172:8000/alltools')
+            .then(res => res.json())
+            .then(tools => {
+                const container = document.getElementById('read-tools-cont');
+                container.innerHTML = '';
+                tools.forEach(tool => {
+                    const p = document.createElement('p');
+                    p.textContent = tool;
+                    p.classList.add('pt');
+                    p.classList.add('container');
+                    container.appendChild(p);
+                });
+            })
     </script>
   </body>
 </html>
