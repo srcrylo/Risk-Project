@@ -247,6 +247,20 @@ body {
     padding: 0px 10px 0px 10px;
 }
 
+#read-jobs-location-select {
+    font-size: 2rem;
+    text-align: center;
+    margin: 20px;
+}
+
+#read-jobs-location-cont {
+    display: none;
+}
+
+#read-tools-cont {
+    margin-top: 10px;
+}
+
 #re-overlay {
     height: 100%;
 }

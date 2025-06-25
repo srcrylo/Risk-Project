@@ -58,9 +58,9 @@
             <div class="dropdown-subs">
               <div class="dropdown-opt" onclick="displaySection('read-jobs')">All Jobs</div>
               <hr class="dropdown-divider" />
-              <div class="dropdown-opt">Jobs (Location)</div>
+              <div class="dropdown-opt" onclick="displaySection('read-jobs-location')">Jobs (Location)</div>
               <hr class="dropdown-divider" />
-              <div class="dropdown-opt">All Tools</div>
+              <div class="dropdown-opt" onclick="displaySection('read-tools')">All Tools</div>
               <hr class="dropdown-divider" />
               <div class="dropdown-opt">Tools (Title)</div>
             </div>
@@ -235,6 +235,17 @@
       <div id="read-jobs" class="alist container">
         <div class="container tile-title">Read All Job Titles</div>
         <div class="container tile-group three-column" id="read-jobs-cont"></div>
+      </div>
+      <div id="read-jobs-location" class="alist container">
+        <div class="container tile-title">Read Job Titles by Location</div>
+        <div class="container tile-group">
+          <select id="read-jobs-location-select"></select>
+        </div>
+        <div class="container tile-group three-column" id="read-jobs-location-cont"></div>
+      </div>
+      <div id="read-tools" class="alist container">
+        <div class="container tile-title">Read All Tools</div>
+        <div class="container three-column" id="read-tools-cont"></div>
       </div>
     </div>
     <script>
@@ -780,7 +791,38 @@
             p.classList.add('container');
             container.appendChild(p);
           })
-        })
+        });
+
+        // Read Jobs by Location
+        fetch('http://10.200.1.172:8000/locations')
+        .then(res => res.json())
+        .then(locs => {
+          const dd = document.getElementById('read-jobs-location-select');
+          dd.innerHTML = '<option value="">--Select--</option>';
+          locs.forEach(loc => {
+            const opt = document.createElement('option');
+            opt.textContent = loc;
+            opt.value = loc;
+            dd.appendChild(opt);
+          })
+        });
+        document.getElementById('read-jobs-location-select').addEventListener('change', function () {
+          const location = this.value;
+          fetch('http://10.200.1.172:8000/jobs/' + location)
+          .then(res => res.json())
+          .then(data => {
+            const container = document.getElementById('read-jobs-location-cont');
+            container.innerHTML = '';
+            data.forEach(job => {
+              const p = document.createElement('p');
+              p.textContent = job;
+              p.classList.add('pt');
+              p.classList.add('container');
+              container.appendChild(p);
+            })
+            document.getElementById('read-jobs-location-cont').style.display = 'inline-block';
+          })
+        });
     </script>
   </body>
 </html>
