@@ -447,11 +447,16 @@ body {
     text-align: center;
 }
 
+#del-title {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
 #update-checks {
     margin-top: 10px;
 }
 
-#update-sub {
+#update-sub, #delete-title-sub {
     font-size: 1.5rem;
     margin-top: 10px;
 }

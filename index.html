@@ -77,7 +77,7 @@
             <div class="dropdown-subs">
               <div class="dropdown-opt" onclick="displaySection('delete-tool')">Delete Tool</div>
               <hr class="dropdown-divider" />
-              <div class="dropdown-opt">Delete Title</div>
+              <div class="dropdown-opt" onclick="displaySection('delete-title')">Delete Title</div>
             </div>
           </div>
         </div>
@@ -261,7 +261,14 @@
         <select id="delete-tool-sel"></select>
         <button id="delete-tool-sub">Submit</button>
         </div>
-        
+      </div>
+      <div id="delete-title" class="alist container">
+        <div class="container tile-title" id="del-title">Delete Title</div>
+        <div class="container flex-row">
+          <select id="delete-title-loc" class="update-sel"></select>
+          <select id="delete-title-title" class="update-sel"></select>
+        </div>
+        <button id="delete-title-sub">Submit</button>
       </div>
     </div>
     <script>
@@ -1028,6 +1035,63 @@
             console.error(error.message);
           })
         });
+        // Delete Title
+        fetch('http://10.200.1.172:8000/locations')
+                .then(res => res.json())
+                .then(data => {
+                    const locations = document.getElementById('delete-title-loc');
+                    locations.innerHTML = '<option value="">--Select--</option>';
+                    data.forEach(loc => {
+                        console.log("adding loc: ", loc);
+                        let opt = document.createElement('option');
+                        opt.value = loc;
+                        opt.textContent = loc;
+                        locations.appendChild(opt);
+                    })
+                });
+        document.getElementById('delete-title-loc').addEventListener('change', function () {
+                const location = this.value;
+                fetch('http://10.200.1.172:8000/jobs/' + location)
+                    .then(res => res.json())
+                    .then(data => {
+                        const jobSelect = document.getElementById('delete-title-title');
+                        jobSelect.innerHTML = '<option value="">--Select--</option>';
+                        data.forEach(job => {
+                            console.log("adding job: ", job);
+                            let opt = document.createElement('option');
+                            opt.value = job;
+                            opt.textContent = job;
+                            let ch = document.createElement('input');
+                            ch.type='checkbox';
+                            jobSelect.appendChild(opt,ch);
+                        })
+                    })
+            });
+        document.getElementById('delete-title-sub').addEventListener('click', function () {
+          let job = document.getElementById('delete-title-title').value;
+          let loc = document.getElementById('delete-title-loc').value;
+          fetch('http://10.200.1.172:8000/deletetitle?title=' + job + '&location=' + loc)
+          .then(response => {
+            if(!response.ok) {
+              throw new Error(`HTTP Error! Status: ${response.status}`);
+            }
+
+            return response.json();
+          })
+          .then(updatedResource => {
+            console.log(updatedResource.message);
+            if(confirm(updatedResource.message)) {
+            location.reload();
+          } else {
+            location.reload();
+          }
+          })
+          .catch(error => {
+            console.error(updatedResource.message);
+          })
+          
+        });
+        
     </script>
   </body>
 </html>
