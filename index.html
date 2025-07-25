@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Testing</title>
+    <title>BMAG Access Lists</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="styles/styles.css" />
@@ -85,6 +85,8 @@
             <div class="dropdown-opt-tile">To CSV</div>
             <div class="dropdown-subs">
               <div class="dropdown-opt" onclick="displaySection('toCSV')">CSV by Location</div>
+              <hr class="dropdown-divider">
+              <div class="dropdown-opt" onclick="displaySection('toCSVsearchTool')">CSV Tool Search</div>
             </div>
           </div>
         </div>
@@ -304,6 +306,13 @@
       </div>
       <div id="triage" class="alist">
         <img src="triage.jpeg" class="triage-img"/>
+      </div>
+      <div id="toCSVsearchTool" class="alist container">
+        <div class="container tile-title">CSV of Tool Users</div>
+        <div class="container flex-row">
+          <select id="csv-search-tool" class="update-sel"></select>
+        </div>
+        <button id="csv-search-tool-sub">Submit</button>
       </div>
     </div>
     <script>
@@ -1164,6 +1173,37 @@
               const a = document.createElement('a');
               a.href = url;
               a.download = `location-${loc}.csv`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            })
+            .catch(err => {
+              console.error("Download failed:", err);
+            })
+    });
+    // CSV of all job titles that use a tool
+    fetch('http://10.200.1.172:8000/alltools')
+      .then(res => res.json()) 
+      .then(data => {
+        const locations = document.getElementById('csv-search-tool');
+        locations.innerHTML = '<option value="">--Select--</option>';
+        data.forEach(loc => {
+          let opt = document.createElement('option');
+          opt.value = loc;
+          opt.textContent = loc;
+          locations.appendChild(opt);
+        })
+      });
+    document.getElementById('csv-search-tool-sub').addEventListener('click', function () {
+      const tool = document.getElementById('csv-search-tool').value;
+      fetch('http://10.200.1.172:8000/toolsearch?tool=' + tool)
+      .then(res => res.blob())
+      .then(blob => {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${tool}-user-titles.csv`;
               document.body.appendChild(a);
               a.click();
               a.remove();
