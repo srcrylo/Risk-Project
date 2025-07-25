@@ -80,6 +80,13 @@
               <div class="dropdown-opt" onclick="displaySection('delete-title')">Delete Title</div>
             </div>
           </div>
+          <hr class="dropdown-divider" />
+          <div class="dropdown-opt">
+            <div class="dropdown-opt-tile">To CSV</div>
+            <div class="dropdown-subs">
+              <div class="dropdown-opt" onclick="displaySection('toCSV')">CSV by Location</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="vr"></div>
@@ -287,6 +294,13 @@
           <select id="delete-title-title" class="update-sel"></select>
         </div>
         <button id="delete-title-sub">Submit</button>
+      </div>
+      <div id="toCSV" class="alist container">
+        <div class="container tile-title" id="csv-title">To CSV By Location</div>
+        <div class="container flex-row">
+          <select id="csv-loc" class="update-sel"></select>
+        </div>
+        <button id="csv-sub">Submit</button>
       </div>
       <div id="triage" class="alist">
         <img src="triage.jpeg" class="triage-img"/>
@@ -1127,7 +1141,38 @@
           })
           
         });
-        
+    // To CSV By Location
+    fetch('http://10.200.1.172:8000/locations')
+                .then(res => res.json())
+                .then(data => {
+                    const locations = document.getElementById('csv-loc');
+                    locations.innerHTML = '<option value="">--Select--</option>';
+                    data.forEach(loc => {
+                        console.log("adding loc: ", loc);
+                        let opt = document.createElement('option');
+                        opt.value = loc;
+                        opt.textContent = loc;
+                        locations.appendChild(opt);
+                    })
+                });
+    document.getElementById('csv-sub').addEventListener('click', function () {
+      const loc = document.getElementById('csv-loc').value;
+      fetch('http://10.200.1.172:8000/locationcsv?loc=' + loc)
+            .then(res => res.blob())
+            .then(blob => {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `location-${loc}.csv`;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            })
+            .catch(err => {
+              console.error("Download failed:", err);
+            })
+    });
     </script>
   </body>
 </html>
