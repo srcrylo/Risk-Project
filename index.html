@@ -82,6 +82,14 @@
           </div>
         </div>
       </div>
+      <div class="vr"></div>
+      <div class="dropdown nav-element">
+        <div class="dropdown-tile"><a href="https://forms.cloud.microsoft/r/nSjLMSGCyf">IET Case</a></div>
+      </div>
+      <div class="vr"></div>
+      <div class="dropdown nav-element">
+        <div class="dropdown-tile" onclick="displaySection('triage')">Triage Tree</div>
+      </div>
     </div>
     <div class="wrapall">
       <div id="newhire" class="nh-wrap alist">
@@ -254,6 +262,16 @@
         </div>
         <div class="container four-column" id="update-checks"></div>
         <button id="update-sub">Submit</button>
+        <div class="child-popup" id="update-popup">
+          <div class="child-popup-title">Confirm Access List</div>
+          <hr class="child-popup-divider-horizontal" />
+          <div id="update-popup-content" class="child-popup-content"></div>
+          <hr class="child-popup-divider-horizontal" />
+          <div class="child-popup-buttons">
+            <button id="update-conf" class="update-popup-button">Confirm</button>
+            <button id="update-cancel" class="update-popup-button">Cancel</button>
+          </div>
+        </div>
       </div>
       <div id="delete-tool" class="alist container">
         <div class="container tile-title">Delete Tool</div>
@@ -269,6 +287,9 @@
           <select id="delete-title-title" class="update-sel"></select>
         </div>
         <button id="delete-title-sub">Submit</button>
+      </div>
+      <div id="triage" class="alist">
+        <img src="triage.jpeg" class="triage-img"/>
       </div>
     </div>
     <script>
@@ -511,7 +532,6 @@
           document.getElementById("tr-overlay").classList.add("active");
         });
       function displaySection(section) {
-
         document.querySelectorAll(".alist").forEach((div) => {
           div.classList.remove("active");
         });
@@ -934,35 +954,50 @@
                 });
             });
         document.getElementById('update-sub').addEventListener('click', function () {
-                const checkedTools = [];
+          document.getElementById('update-popup').style.display = 'flex';
+          const checkedTools = [];
 
-                //Select all checkboxes by type
-                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-                checkboxes.forEach(cb => {
+          checkboxes.forEach(cb => {
+            if(cb.checked) {
+              checkedTools.push(cb.value);
+            }
+          });
+
+          checkedTools.forEach(tool => {
+            const popup = document.getElementById('update-popup-content');
+            let p = document.createElement('p');
+            p.value = tool;
+            p.textContent = tool;
+
+            popup.insertBefore(p, popup.children[popup.children.length-2]);
+          });
+        });
+        
+        document.getElementById('update-cancel').addEventListener('click', function () {
+          location.reload();
+        });
+
+        document.getElementById('update-conf').addEventListener('click', function () {
+          const endCheckedTools = []
+                const unCheckedTools = []
+                checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(cb =>{
                     if (cb.checked) {
-                        checkedTools.push(cb.value);
+                        endCheckedTools.push(cb.value);
+                    } else {
+                        unCheckedTools.push(cb.value);
                     }
                 });
-                
-                const endCheckedTools = [];
-                const unCheckedTools = [];
-                checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                checkboxes.forEach(cb => {
-                  if (cb.checked) {
-                    endCheckedTools.push(cb.value);
-                  } else {
-                    unCheckedTools.push(cb.value);
-                  }
-                });
                 endCheckedTools.forEach(ct => {
-                  const d = {
-                    title: document.getElementById('update-title').value,
-                    location: document.getElementById('update-loc').value,
-                    tool: ct,
-                    flag: 1
-                  };
-                  fetch('http://10.200.1.172:8000/updatetool?title=' + d.title + '&loc=' + d.location + '&tool=' + d.tool + '&flag=' + d.flag)
+                    const d = {
+                        title: document.getElementById('update-title').value,
+                        location: document.getElementById('update-loc').value,
+                        tool: ct,
+                        flag: 1
+                    };
+                    fetch('http://10.200.1.172:8000/updatetool?title=' + d.title + '&loc=' + d.location + '&tool=' + d.tool + '&flag=' + d.flag)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -971,20 +1006,20 @@
                         return response.json();
                     })
                     .then(updatedResource => {
-                        console.log(updatedResource.message);
+                        console.log('Resource updated:', updatedResource);
                     })
                     .catch(error => {
                         console.error('There was a problem with the fetch operation: ', error);
                     })
                 });
                 unCheckedTools.forEach(ct => {
-                  const d = {
-                    title: document.getElementById('update-title').value,
-                    location: document.getElementById('update-loc').value,
-                    tool: ct,
-                    flag: 0
-                  }
-                  fetch('http://10.200.1.172:8000/updatetool?title=' + d.title + '&loc=' + d.location + '&tool=' + d.tool + '&flag=' + d.flag)
+                    const d = {
+                        title: document.getElementById('update-title').value,
+                        location: document.getElementById('update-loc').value,
+                        tool: ct,
+                        flag: 0
+                    };
+                    fetch('http://10.200.1.172:8000/updatetool?title=' + d.title + '&loc=' + d.location + '&tool=' + d.tool + '&flag=' + d.flag)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
@@ -993,16 +1028,17 @@
                         return response.json();
                     })
                     .then(updatedResource => {
-                        console.log(updatedResource.message);
+                        console.log('Resource updated:', updatedResource);
                     })
                     .catch(error => {
                         console.error('There was a problem with the fetch operation: ', error);
                     })
-                });  
-            });   
-            
-            // Delete Tool
-            fetch('http://10.200.1.172:8000/alltools')
+                });
+                alert('Updated successfully.');
+                location.reload();
+        });
+        // Delete Tool
+        fetch('http://10.200.1.172:8000/alltools')
         .then(res => res.json())
         .then(tools => {
             const sel = document.getElementById('delete-tool-sel');

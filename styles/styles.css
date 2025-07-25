@@ -31,6 +31,33 @@ body {
     margin: 0;
 }
 
+.child-popup {
+    position: absolute;
+    background-color: var(--nav-color);
+    width: 300px;
+    top: 50%;
+    left: calc(50% - 150px);
+    border: 3px solid var(--nav-border);
+    border-radius: 5px;
+    
+}
+
+.child-popup-buttons {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.child-popup-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.child-popup-divider-horizontal {
+    margin: 0px 10px 0px 10px;
+    border: 1px solid var(--nav-border);
+}
+
 .container {
     background-color: var(--nav-color);
     border: 3px solid var(--nav-border);
@@ -363,6 +390,35 @@ body {
     margin-top: 0px;
 }
 
+#triage {
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.triage-img {
+    max-width: 60%;
+    height: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 3px solid var(--nav-border-darker);
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #333;
+}
+
+#update-popup {
+    display: none;
+    flex-direction: column;
+}
+
+.update-popup-button {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.update-popup-button:first-child {
+    margin-bottom: 5px;
+}
 .four-column {
     columns: 4;
     display: inline-block;
